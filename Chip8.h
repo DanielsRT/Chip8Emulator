@@ -21,7 +21,7 @@ private:
 	uint8_t sp{}; // Stack pointer
 	uint8_t delayTimer{}; // Delay timer
 	uint8_t soundTimer{}; // Sound timer
-	
+	uint16_t opcode{}; // Current opcode
 
 public:
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
