@@ -24,6 +24,8 @@ private:
 	uint16_t opcode{}; // Current opcode
 
 public:
+	Chip8();
+
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
 	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
 };
