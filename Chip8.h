@@ -21,7 +21,9 @@ private:
 	uint8_t sp{}; // Stack pointer
 	uint8_t delayTimer{}; // Delay timer
 	uint8_t soundTimer{}; // Sound timer
+	
+
+public:
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
 	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
-
 };
