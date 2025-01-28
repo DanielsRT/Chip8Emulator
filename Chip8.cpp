@@ -85,3 +85,12 @@ void Chip8::OP_1nnn()
 	uint16_t address = opcode & 0x0FFF;
 	pc = address;
 }
+
+void Chip8::OP_2nnn()
+{
+	// Call a subroutine at address nnn by adding the current address to the stack and setting the program counter to nnn
+	stack[sp] = pc;
+	++sp;
+	uint16_t address = opcode & 0x0FFF;
+	pc = address;
+}
