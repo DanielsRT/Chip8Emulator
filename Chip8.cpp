@@ -258,3 +258,10 @@ void Chip8::OP_Annn()
 	uint16_t address = opcode & 0x0FFFu;
 	index = address;
 }
+
+void Chip8::OP_Bnnn()
+{
+	// Jump to the address nnn plus V0
+	uint16_t address = opcode & 0x0FFFu;
+	pc = registers[0] + address;
+}
