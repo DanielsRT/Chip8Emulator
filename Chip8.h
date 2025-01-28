@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <random>
 
 const unsigned int REGISTER_COUNT = 16;
 const unsigned int MEMORY_SIZE = 4096;
@@ -22,6 +23,9 @@ private:
 	uint8_t delayTimer{}; // Delay timer
 	uint8_t soundTimer{}; // Sound timer
 	uint16_t opcode{}; // Current opcode
+
+	std::default_random_engine randGen; // Random number generator
+	std::uniform_int_distribution<uint8_t> randByte; // Random byte
 
 public:
 	Chip8();

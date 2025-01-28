@@ -1,8 +1,11 @@
 #include "Chip8.h"
 #include <fstream>
+#include <chrono>
+#include <random>
 
 const unsigned int START_ADDRESS = 0x200; // 0x000 to 0x1FF are reserved
 const unsigned int FONTSET_SIZE = 80; // 16 characters, 5 bytes each
+const unsigned int FONTSET_START_ADDRESS = 0x50;
 
 uint8_t fontset[FONTSET_SIZE] =
 {
@@ -25,8 +28,17 @@ uint8_t fontset[FONTSET_SIZE] =
 };
 
 Chip8::Chip8()
+	: randGen(std::chrono::system_clock::now().time_since_epoch().count())
 {
 	pc = START_ADDRESS; 
+
+	// Load fontset into memory
+	for (unsigned int i = 0; i < FONTSET_SIZE; ++i)
+	{
+		memory[FONTSET_START_ADDRESS + i] = fontset[i];
+	}
+
+	randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
 }
 
 void Chip8::LoadROM(char const* filename)
