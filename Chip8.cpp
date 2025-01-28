@@ -240,3 +240,14 @@ void Chip8::OP_8xyE()
 	registers[0xF] = (registers[Vx] & 0x80u) >> 7u;
 	registers[Vx] <<= 1;
 }
+
+void Chip8::OP_9xy0()
+{
+	// Skip the next instruction if Vx doesn't equal Vy
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+	if (registers[Vx] != registers[Vy])
+	{
+		pc += 2;
+	}
+}

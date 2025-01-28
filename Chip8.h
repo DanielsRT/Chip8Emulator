@@ -53,4 +53,5 @@ private:
 	void OP_8xy6(); // SHR Vx {, Vy}
 	void OP_8xy7(); // SUBN Vx, Vy
 	void OP_8xyE(); // SHL Vx {, Vy}
+	void OP_9xy0(); // SNE Vx, Vy
 };
