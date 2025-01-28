@@ -40,4 +40,5 @@ private:
 	void OP_1nnn(); // JP addr
 	void OP_2nnn(); // CALL addr
 	void OP_3xkk(); // SE Vx, byte
+	void OP_4xkk(); // SNE Vx, byte
 };
