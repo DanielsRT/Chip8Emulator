@@ -13,6 +13,13 @@ const unsigned int VIDEO_HEIGHT = 32;
 // Chip-8 emulator class
 class Chip8
 {
+public:
+	Chip8();
+	void LoadROM(const char* filename);
+
+	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
+	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
+
 private:
 	uint8_t registers[REGISTER_COUNT]{}; // V0 to VF
 	uint8_t memory[MEMORY_SIZE]{}; // 4KB memory
@@ -26,11 +33,4 @@ private:
 
 	std::default_random_engine randGen; // Random number generator
 	std::uniform_int_distribution<uint8_t> randByte; // Random byte
-
-public:
-	Chip8();
-	void LoadROM(const char* filename);
-
-	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
-	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
 };
