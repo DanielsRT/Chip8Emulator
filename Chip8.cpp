@@ -106,7 +106,7 @@ void Chip8::OP_3xkk()
 	}
 }
 
-void Chip8::Chip8::OP_4xkk()
+void Chip8::OP_4xkk()
 {
 	// Skip the next instruction if register Vx doesn't equal kk
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
@@ -134,4 +134,12 @@ void Chip8::OP_6xkk()
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t byte = opcode & 0x00FFu;
 	registers[Vx] = byte;
+}
+
+void Chip8::OP_7xkk()
+{
+	// Add kk to register Vx
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t byte = opcode & 0x00FFu;
+	registers[Vx] += byte;
 }
