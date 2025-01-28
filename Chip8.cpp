@@ -71,3 +71,10 @@ void Chip8::OP_00E0()
 	// Clear the display by overwriting video memory with zeros
 	memset(video, 0, sizeof(video));
 }
+
+void Chip8::OP_00EE()
+{
+	// Return from a subroutine by setting the program counter to the address at the top of the stack
+	--sp;
+	pc = stack[sp];
+}
