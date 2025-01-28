@@ -251,3 +251,10 @@ void Chip8::OP_9xy0()
 		pc += 2;
 	}
 }
+
+void Chip8::OP_Annn()
+{
+	// Set the index register to nnn
+	uint16_t address = opcode & 0x0FFFu;
+	index = address;
+}
