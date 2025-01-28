@@ -57,4 +57,5 @@ private:
 	void OP_Annn(); // LD I, addr
 	void OP_Bnnn(); // JP V0, addr
 	void OP_Cxkk(); // RND Vx, byte
+	void OP_Dxyn(); // DRW Vx, Vy, nibble
 };
