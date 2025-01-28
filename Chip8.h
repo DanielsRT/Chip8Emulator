@@ -37,4 +37,5 @@ private:
 	// Opcode functions
 	void OP_00E0(); // CLS
 	void OP_00EE(); // RET
+	void OP_1nnn(); // JP addr
 };

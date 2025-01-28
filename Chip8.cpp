@@ -78,3 +78,10 @@ void Chip8::OP_00EE()
 	--sp;
 	pc = stack[sp];
 }
+
+void Chip8::OP_1nnn()
+{
+	// Jump to address nnn by setting the program counter to nnn
+	uint16_t address = opcode & 0x0FFF;
+	pc = address;
+}
