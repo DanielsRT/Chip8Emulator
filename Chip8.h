@@ -46,4 +46,5 @@ private:
 	void OP_7xkk(); // ADD Vx, byte
 	void OP_8xy0(); // LD Vx, Vy
 	void OP_8xy1(); // OR Vx, Vy
+	void OP_8xy2(); // AND Vx, Vy
 };
