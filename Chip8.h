@@ -50,4 +50,5 @@ private:
 	void OP_8xy3(); // XOR Vx, Vy
 	void OP_8xy4(); // ADD Vx, Vy
 	void OP_8xy5(); // SUB Vx, Vy
+	void OP_8xy6(); // SHR Vx {, Vy}
 };
