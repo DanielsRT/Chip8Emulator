@@ -41,4 +41,5 @@ private:
 	void OP_2nnn(); // CALL addr
 	void OP_3xkk(); // SE Vx, byte
 	void OP_4xkk(); // SNE Vx, byte
+	void OP_5xy0(); // SE Vx, Vy
 };
