@@ -33,4 +33,7 @@ private:
 
 	std::default_random_engine randGen; // Random number generator
 	std::uniform_int_distribution<uint8_t> randByte; // Random byte
+
+	// Opcode functions
+	void OP_00E0(); // CLS
 };

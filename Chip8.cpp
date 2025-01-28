@@ -65,3 +65,9 @@ void Chip8::LoadROM(char const* filename)
 		delete[] buffer;
 	}
 }
+
+void Chip8::OP_00E0()
+{
+	// Clear the display by overwriting video memory with zeros
+	memset(video, 0, sizeof(video));
+}
