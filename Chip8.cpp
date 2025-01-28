@@ -318,3 +318,14 @@ void Chip8::OP_Ex9E()
 		pc += 2;
 	}
 }
+
+void Chip8::OP_ExA1()
+{
+	// Skip the next instruction if the key stored in Vx isn't pressed
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t key = registers[Vx];
+	if (!keypad[key])
+	{
+		pc += 2;
+	}
+}

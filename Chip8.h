@@ -59,4 +59,5 @@ private:
 	void OP_Cxkk(); // RND Vx, byte
 	void OP_Dxyn(); // DRW Vx, Vy, nibble
 	void OP_Ex9E(); // SKP Vx
+	void OP_ExA1(); // SKNP Vx
 };
