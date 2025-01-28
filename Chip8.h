@@ -25,6 +25,7 @@ private:
 
 public:
 	Chip8();
+	void LoadROM(const char* filename);
 
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
 	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
