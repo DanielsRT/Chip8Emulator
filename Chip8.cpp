@@ -232,3 +232,11 @@ void Chip8::OP_8xy7()
 	}
 	registers[Vx] = registers[Vy] - registers[Vx];
 }
+
+void Chip8::OP_8xyE()
+{
+	// Shift Vx left by one. VF is set to the most significant bit of Vx before the shift
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	registers[0xF] = (registers[Vx] & 0x80u) >> 7u;
+	registers[Vx] <<= 1;
+}
