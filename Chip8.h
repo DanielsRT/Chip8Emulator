@@ -56,4 +56,5 @@ private:
 	void OP_9xy0(); // SNE Vx, Vy
 	void OP_Annn(); // LD I, addr
 	void OP_Bnnn(); // JP V0, addr
+	void OP_Cxkk(); // RND Vx, byte
 };

@@ -265,3 +265,11 @@ void Chip8::OP_Bnnn()
 	uint16_t address = opcode & 0x0FFFu;
 	pc = registers[0] + address;
 }
+
+void Chip8::OP_Cxkk()
+{
+	// Set Vx to a random number with a mask of kk
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t byte = opcode & 0x00FFu;
+	registers[Vx] = randByte(randGen) & byte;
+}
