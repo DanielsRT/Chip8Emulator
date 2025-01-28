@@ -44,4 +44,5 @@ private:
 	void OP_5xy0(); // SE Vx, Vy
 	void OP_6xkk(); // LD Vx, byte
 	void OP_7xkk(); // ADD Vx, byte
+	void OP_8xy0(); // LD Vx, Vy
 };
