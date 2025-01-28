@@ -94,3 +94,14 @@ void Chip8::OP_2nnn()
 	uint16_t address = opcode & 0x0FFF;
 	pc = address;
 }
+
+void Chip8::OP_3xkk()
+{
+	// Skip the next instruction if register Vx equals kk
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t byte = opcode & 0x00FFu;
+	if (registers[Vx] == byte)
+	{
+		pc += 2;
+	}
+}
