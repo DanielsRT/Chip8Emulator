@@ -167,3 +167,12 @@ void Chip8::OP_8xy2()
 	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
 	registers[Vx] &= registers[Vy];
 }
+
+void Chip8::OP_8xy3()
+{
+	// Set Vx to Vx XOR Vy
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+	registers[Vx] ^= registers[Vy];
+}
+
