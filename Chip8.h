@@ -69,4 +69,5 @@ private:
 	void OP_Fx33(); // LD B, Vx
 	void OP_Fx55(); // LD [I], Vx
 	void OP_Fx65(); // LD Vx, [I]
+	void OP_NULL(); // Invalid opcode
 };
