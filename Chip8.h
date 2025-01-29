@@ -66,4 +66,5 @@ private:
 	void OP_Fx18(); // LD ST, Vx
 	void OP_Fx1E(); // ADD I, Vx
 	void OP_Fx29(); // LD F, Vx
+	void OP_Fx33(); // LD B, Vx
 };

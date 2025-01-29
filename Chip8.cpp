@@ -439,3 +439,18 @@ void Chip8::OP_Fx29()
 	uint8_t digit = registers[Vx];
 	index = FONTSET_START_ADDRESS + (5 * digit);
 }
+
+void Chip8::OP_Fx33()
+{
+	// Store the binary-coded decimal representation of Vx at the addresses I, I + 1, and I + 2
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t value = registers[Vx];
+	// Ones-place
+	memory[index + 2] = value % 10;
+	value /= 10;
+	// Tens-place
+	memory[index + 1] = value % 10;
+	value /= 10;
+	// Hundreds-place
+	memory[index] = value % 10;
+}
