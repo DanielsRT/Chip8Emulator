@@ -431,3 +431,11 @@ void Chip8::OP_Fx1E()
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	index += registers[Vx];
 }
+
+void Chip8::OP_Fx29()
+{
+	// Set I to the location of the sprite for the character in Vx
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t digit = registers[Vx];
+	index = FONTSET_START_ADDRESS + (5 * digit);
+}
