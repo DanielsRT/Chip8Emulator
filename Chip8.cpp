@@ -464,3 +464,13 @@ void Chip8::OP_Fx55()
 		memory[index + i] = registers[i];
 	}
 }
+
+void Chip8::OP_Fx65()
+{
+	// Fill V0 to Vx with values from memory starting at address I
+	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	for (uint8_t i = 0; i <= Vx; ++i)
+	{
+		registers[i] = memory[index + i];
+	}
+}
