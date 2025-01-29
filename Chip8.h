@@ -61,4 +61,5 @@ private:
 	void OP_Ex9E(); // SKP Vx
 	void OP_ExA1(); // SKNP Vx
 	void OP_Fx07(); // LD Vx, DT
+	void OP_Fx0A(); // LD Vx, K
 };
