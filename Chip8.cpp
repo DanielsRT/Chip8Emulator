@@ -61,6 +61,17 @@ Chip8::Chip8()
 	//Table 0
 	table0[0x0] = &Chip8::OP_00E0;
 	table0[0xE] = &Chip8::OP_00EE;
+
+	//Table 8
+	table8[0x0] = &Chip8::OP_8xy0;
+	table8[0x1] = &Chip8::OP_8xy1;
+	table8[0x2] = &Chip8::OP_8xy2;
+	table8[0x3] = &Chip8::OP_8xy3;
+	table8[0x4] = &Chip8::OP_8xy4;
+	table8[0x5] = &Chip8::OP_8xy5;
+	table8[0x6] = &Chip8::OP_8xy6;
+	table8[0x7] = &Chip8::OP_8xy7;
+	table8[0xE] = &Chip8::OP_8xyE;
 }
 
 void Chip8::LoadROM(char const* filename)
