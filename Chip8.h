@@ -16,6 +16,7 @@ class Chip8
 public:
 	Chip8();
 	void LoadROM(const char* filename);
+	void Cycle();
 
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
 	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{}; // 64x32 monochrome display
@@ -33,6 +34,18 @@ private:
 
 	std::default_random_engine randGen; // Random number generator
 	std::uniform_int_distribution<uint8_t> randByte; // Random byte
+
+	void Table0();
+	void Table8();
+	void TableE();
+	void TableF();
+
+	typedef void (Chip8::*Chip8Func)();
+	Chip8Func table[0xF + 1];
+	Chip8Func table0[0xE + 1] = { &Chip8::OP_NULL };
+	Chip8Func table8[0xE + 1] = { &Chip8::OP_NULL };
+	Chip8Func tableE[0x1] = { &Chip8::OP_NULL };
+	Chip8Func tableF[0x65] = { &Chip8::OP_NULL };
 
 	// Opcode functions
 	void OP_00E0(); // CLS
@@ -69,4 +82,5 @@ private:
 	void OP_Fx33(); // LD B, Vx
 	void OP_Fx55(); // LD [I], Vx
 	void OP_Fx65(); // LD Vx, [I]
+	void OP_NULL(); // Invalid opcode
 };
