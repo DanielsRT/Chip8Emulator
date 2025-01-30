@@ -34,6 +34,18 @@ private:
 	std::default_random_engine randGen; // Random number generator
 	std::uniform_int_distribution<uint8_t> randByte; // Random byte
 
+	void Table0();
+	void Table8();
+	void TableE();
+	void TableF();
+
+	typedef void (Chip8::*Chip8Func)();
+	Chip8Func table[0xF + 1];
+	Chip8Func table0[0xE + 1] = { &Chip8::OP_NULL };
+	Chip8Func table8[0xE + 1] = { &Chip8::OP_NULL };
+	Chip8Func tableE[0x1] = { &Chip8::OP_NULL };
+	Chip8Func tableF[0x65] = { &Chip8::OP_NULL };
+
 	// Opcode functions
 	void OP_00E0(); // CLS
 	void OP_00EE(); // RET
