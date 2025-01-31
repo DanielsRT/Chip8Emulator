@@ -15,7 +15,7 @@ class Chip8
 {
 public:
 	Chip8();
-	void LoadROM(const char* filename);
+	void LoadROM(char const* filename);
 	void Cycle();
 
 	uint8_t keypad[KEY_COUNT]{}; // Hex keypad
@@ -33,19 +33,19 @@ private:
 	uint16_t opcode{}; // Current opcode
 
 	std::default_random_engine randGen; // Random number generator
-	std::uniform_int_distribution<int> distribution; // Random number distribution
+	std::uniform_int_distribution<int> randNum; // Random number distribution
 
 	void Table0();
 	void Table8();
 	void TableE();
 	void TableF();
 
-	typedef void (Chip8::*Chip8Func)();
+	typedef void (Chip8::* Chip8Func)();
 	Chip8Func table[0xF + 1];
-	Chip8Func table0[0xE + 1] = { &Chip8::OP_NULL };
-	Chip8Func table8[0xE + 1] = { &Chip8::OP_NULL };
-	Chip8Func tableE[0x1] = { &Chip8::OP_NULL };
-	Chip8Func tableF[0x65] = { &Chip8::OP_NULL };
+	Chip8Func table0[0xE + 1];
+	Chip8Func table8[0xE + 1];
+	Chip8Func tableE[0xE + 1];
+	Chip8Func tableF[0x65 + 1];
 
 	// Opcode functions
 	void OP_00E0(); // CLS

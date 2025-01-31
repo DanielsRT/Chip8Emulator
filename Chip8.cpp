@@ -2,6 +2,8 @@
 #include <fstream>
 #include <chrono>
 #include <random>
+#include <iostream>
+#include <string>
 
 const unsigned int START_ADDRESS = 0x200; // 0x000 to 0x1FF are reserved
 const unsigned int FONTSET_SIZE = 80; // 16 characters, 5 bytes each
@@ -38,7 +40,7 @@ Chip8::Chip8()
 		memory[FONTSET_START_ADDRESS + i] = fontset[i];
 	}
 
-	distribution = std::uniform_int_distribution<int>(0, 255);
+	randNum = std::uniform_int_distribution<int>(0, 255);
 
 	// Function pointer table
 	table[0x0] = &Chip8::Table0;
@@ -58,11 +60,18 @@ Chip8::Chip8()
 	table[0xE] = &Chip8::TableE;
 	table[0xF] = &Chip8::TableF;
 
-	//Table 0
+	for (size_t i = 0; i <= 0xE; i++)
+	{
+		table0[i] = &Chip8::OP_NULL;
+		table8[i] = &Chip8::OP_NULL;
+		tableE[i] = &Chip8::OP_NULL;
+	}
+	
+	// Table 0
 	table0[0x0] = &Chip8::OP_00E0;
 	table0[0xE] = &Chip8::OP_00EE;
 
-	//Table 8
+	// Table 8
 	table8[0x0] = &Chip8::OP_8xy0;
 	table8[0x1] = &Chip8::OP_8xy1;
 	table8[0x2] = &Chip8::OP_8xy2;
@@ -73,11 +82,16 @@ Chip8::Chip8()
 	table8[0x7] = &Chip8::OP_8xy7;
 	table8[0xE] = &Chip8::OP_8xyE;
 
-	//Table E
+	// Table E
 	tableE[0x1] = &Chip8::OP_ExA1;
 	tableE[0xE] = &Chip8::OP_Ex9E;
 
-	//Table F
+	// Table F
+	for (size_t i = 0; i <= 0x65; i++)
+	{
+		tableF[i] = &Chip8::OP_NULL;
+	}
+
 	tableF[0x07] = &Chip8::OP_Fx07;
 	tableF[0x0A] = &Chip8::OP_Fx0A;
 	tableF[0x15] = &Chip8::OP_Fx15;
@@ -91,43 +105,69 @@ Chip8::Chip8()
 
 void Chip8::LoadROM(char const* filename)
 {
-	// Open the file in binary mode and move the file pointer to the end
-	std::ifstream file(filename, std::ios::binary | std::ios::ate);
+	printf("Loading ROM: %s\n", filename);
 
-	if (file.is_open())
-	{
-		// Get the size of the file and allocate a buffer to hold the contents
-		std::streampos size = file.tellg();
-		char* buffer = new char[size];
+	// Open ROM file
+    FILE* rom;
+    errno_t err = fopen_s(&rom, filename, "rb");
+    if (err != 0) {
+    std::cerr << "Failed to open ROM" << std::endl;
+    return;
+    }
 
-		// Go back to the beginning of the file and read its contents into the buffer
-		file.seekg(0, std::ios::beg);
-		file.read(buffer, size);
-		file.close();
+	// Get file size
+	fseek(rom, 0, SEEK_END);
+	long rom_size = ftell(rom);
+	rewind(rom);
 
-		// Load the ROM contents into the Chip-8's memory
-		for (long i = 0; i < size; ++i)
-		{
-			memory[START_ADDRESS + i] = buffer[i];
-		}
-		delete[] buffer;
+	// Allocate memory to store rom
+	char* rom_buffer = (char*)malloc(sizeof(char) * rom_size);
+	if (rom_buffer == NULL) {
+		std::cerr << "Failed to allocate memory for ROM" << std::endl;
+		return;
 	}
+
+	// Copy ROM into buffer
+	size_t result = fread(rom_buffer, sizeof(char), (size_t)rom_size, rom);
+	if (result != rom_size) {
+		std::cerr << "Failed to read ROM" << std::endl;
+		return;
+	}
+
+	// Copy buffer to memory
+	if ((4096 - 512) > rom_size) {
+		for (int i = 0; i < rom_size; ++i) {
+			memory[START_ADDRESS + i] = (uint8_t)rom_buffer[i];
+		}
+	}
+	else {
+		std::cerr << "ROM too large to fit in memory" << std::endl;
+		return;
+	}
+
+	// Clean up
+	fclose(rom);
+	free(rom_buffer);
 }
 
 void Chip8::Cycle()
 {
 	// Fetch
+	if (pc + 1 >= MEMORY_SIZE) {
+		std::cerr << "Program counter out of bounds: " << pc << std::endl;
+		return;
+	}
 	opcode = (memory[pc] << 8u) | memory[pc + 1];
 	pc += 2;
+
 	// Decode and execute
 	((*this).*(table[(opcode & 0xF000u) >> 12u]))();
+
 	// Update timers
-	if (delayTimer > 0)
-	{
+	if (delayTimer > 0) {
 		--delayTimer;
 	}
-	if (soundTimer > 0)
-	{
+	if (soundTimer > 0) {
 		--soundTimer;
 	}
 }
@@ -357,7 +397,8 @@ void Chip8::OP_Cxkk()
 	// Set Vx to a random number with a mask of kk
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t byte = opcode & 0x00FFu;
-	registers[Vx] = static_cast<uint8_t>(distribution(randGen)) & byte;
+
+	registers[Vx] = static_cast<uint8_t>(randNum(randGen)) & byte;
 }
 
 void Chip8::OP_Dxyn()
