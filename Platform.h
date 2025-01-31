@@ -1,13 +1,12 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <cstdint>
 #include <SDL3/SDL.h>
-#include <glad/glad.h>
 
 
 class Platform
 {
-	friend class Imgui;
 
 public:
 	Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight);
