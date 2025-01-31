@@ -38,7 +38,7 @@ Chip8::Chip8()
 		memory[FONTSET_START_ADDRESS + i] = fontset[i];
 	}
 
-	randByte = std::uniform_int_distribution<uint8_t>(0, 255U);
+	distribution = std::uniform_int_distribution<int>(0, 255);
 
 	// Function pointer table
 	table[0x0] = &Chip8::Table0;
@@ -357,7 +357,7 @@ void Chip8::OP_Cxkk()
 	// Set Vx to a random number with a mask of kk
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t byte = opcode & 0x00FFu;
-	registers[Vx] = randByte(randGen) & byte;
+	registers[Vx] = static_cast<uint8_t>(distribution(randGen)) & byte;
 }
 
 void Chip8::OP_Dxyn()

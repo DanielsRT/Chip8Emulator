@@ -33,7 +33,7 @@ private:
 	uint16_t opcode{}; // Current opcode
 
 	std::default_random_engine randGen; // Random number generator
-	std::uniform_int_distribution<uint8_t> randByte; // Random byte
+	std::uniform_int_distribution<int> distribution; // Random number distribution
 
 	void Table0();
 	void Table8();
