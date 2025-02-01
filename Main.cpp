@@ -32,10 +32,10 @@ uint8_t keymap[16] = {
 int main(int argc, char** argv) {
 
     // Command usage
-    /*if (argc != 2) {
+    if (argc != 2) {
         cout << "Usage: chip8 <ROM file>" << endl;
         return 1;
-    }*/
+    }
 
     Chip8 chip8 = Chip8();
 
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     uint32_t pixels[2048];
 
 
-    if (!chip8.LoadROM("PONG"))
+    if (!chip8.LoadROM(argv[1]))
         return 2;
 
     while (true) {
