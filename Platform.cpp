@@ -1,33 +1,55 @@
 #include "Platform.h"
-#include <glad/glad.h>
-#include <SDL3/SDL.h>
-
+#include <iostream>
+#include <string>
 
 Platform::Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-	window = SDL_CreateWindow(
-		title,
-		windowWidth, windowHeight,
-		SDL_WINDOWPOS_CENTERED | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(title, windowWidth, windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	if (!window)
+	{
+		std::cerr << "Could not create window: " << SDL_GetError() << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 
 	gl_context = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1);
 	gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
 
+	renderer = SDL_CreateRenderer(window, NULL);
+	SDL_SetRenderLogicalPresentation(renderer, windowWidth, windowHeight, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
+	texture = SDL_CreateTexture(renderer,
+    SDL_PIXELFORMAT_RGBA8888,
+    SDL_TEXTUREACCESS_STREAMING,
+    textureWidth, textureHeight);
+
 	glGenTextures(1, &framebuffer_texture);
 	glBindTexture(GL_TEXTURE_2D, framebuffer_texture);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 640, 320, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//Check for error
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+	{
+		std::cout << "Error init texture: " << error;
+	}
 }
 
 Platform::~Platform()
