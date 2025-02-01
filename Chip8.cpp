@@ -471,8 +471,6 @@ void Chip8::Cycle() {
         --delayTimer;
 
     if (soundTimer > 0)
-        if (soundTimer == 1);
-	        printf("BEEP!\n");
         --soundTimer;
 
 }
