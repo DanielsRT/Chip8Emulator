@@ -27,6 +27,7 @@ unsigned char chip8_fontset[80] =
 };
 
 Chip8::Chip8() {
+	drawFlag = false;
     pc = 0x200;
     opcode = 0;
     index = 0;
