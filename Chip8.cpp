@@ -32,7 +32,19 @@ uint8_t fontset[FONTSET_SIZE] =
 Chip8::Chip8()
 	: randGen(std::chrono::system_clock::now().time_since_epoch().count())
 {
+	// Initialize registers
 	pc = START_ADDRESS; 
+	opcode = 0;
+	index = 0;
+	sp = 0;
+	delayTimer = 0;
+	soundTimer = 0;
+
+	for (int i = 0; i < 16; ++i) {
+		stack[i] = 0;
+		keypad[i] = 0;
+	}
+
 
 	// Load fontset into memory
 	for (unsigned int i = 0; i < FONTSET_SIZE; ++i)
@@ -440,7 +452,7 @@ void Chip8::OP_Ex9E()
 	// Skip the next instruction if the key stored in Vx is pressed
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t key = registers[Vx];
-	if (keypad[key])
+	if (keypad[key] != 0)
 	{
 		pc += 2;
 	}
@@ -451,7 +463,7 @@ void Chip8::OP_ExA1()
 	// Skip the next instruction if the key stored in Vx isn't pressed
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 	uint8_t key = registers[Vx];
-	if (!keypad[key])
+	if (keypad[key] == 0)
 	{
 		pc += 2;
 	}
@@ -468,67 +480,67 @@ void Chip8::OP_Fx0A()
 {
 	// Wait for a key press and store the result in Vx. If no key is pressed, repeat the instruction by decrementing the program counter by 2
 	uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-	if (keypad[0])
+	if (keypad[0] != 0)
 	{
 		registers[Vx] = 0;
 	}
-	else if (keypad[1])
+	else if (keypad[1] != 0)
 	{
 		registers[Vx] = 1;
 	}
-	else if (keypad[2])
+	else if (keypad[2] != 0)
 	{
 		registers[Vx] = 2;
 	}
-	else if (keypad[3])
+	else if (keypad[3] != 0)
 	{
 		registers[Vx] = 3;
 	}
-	else if (keypad[4])
+	else if (keypad[4] != 0)
 	{
 		registers[Vx] = 4;
 	}
-	else if (keypad[5])
+	else if (keypad[5] != 0)
 	{
 		registers[Vx] = 5;
 	}
-	else if (keypad[6])
+	else if (keypad[6] != 0)
 	{
 		registers[Vx] = 6;
 	}
-	else if (keypad[7])
+	else if (keypad[7] != 0)
 	{
 		registers[Vx] = 7;
 	}
-	else if (keypad[8])
+	else if (keypad[8] != 0)
 	{
 		registers[Vx] = 8;
 	}
-	else if (keypad[9])
+	else if (keypad[9] != 0)
 	{
 		registers[Vx] = 9;
 	}
-	else if (keypad[10])
+	else if (keypad[10] != 0)
 	{
 		registers[Vx] = 10;
 	}
-	else if (keypad[11])
+	else if (keypad[11] != 0)
 	{
 		registers[Vx] = 11;
 	}
-	else if (keypad[12])
+	else if (keypad[12] != 0)
 	{
 		registers[Vx] = 12;
 	}
-	else if (keypad[13])
+	else if (keypad[13] != 0)
 	{
 		registers[Vx] = 13;
 	}
-	else if (keypad[14])
+	else if (keypad[14] != 0)
 	{
 		registers[Vx] = 14;
 	}
-	else if (keypad[15])
+	else if (keypad[15] != 0)
 	{
 		registers[Vx] = 15;
 	}
